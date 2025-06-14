@@ -493,10 +493,9 @@ void dishu(void)
 	if(rnd==1)
 	{
 		OLED_Clear();		//清屏
-		OLED_ShowCHinese(0,0, 31);
-		OLED_ShowCHinese(0+16,0, 32);
-		OLED_ShowCHinese(0+16+16,0, 33);
-		OLED_ShowCHinese(0+16+16+16,0, 34);
+		OLED_ShowCHinese(0,0, 47);
+		OLED_ShowCHinese(0+16,0, 48);
+		OLED_ShowCHinese(0+16+16,0, 49);
 		OLED_ShowCHinese(0+16+16+16+16,0,35);
 		OLED_DrawBMP(4,(64-24)/8,4+22,(64)/8,BMP1);
 		
@@ -509,10 +508,10 @@ void dishu(void)
 	if(rnd==2)
 	{
 		OLED_Clear();		//清屏
-		OLED_ShowCHinese(0,0, 31);
-		OLED_ShowCHinese(0+16,0, 32);
-		OLED_ShowCHinese(0+16+16,0, 33);
-		OLED_ShowCHinese(0+16+16+16,0, 34);
+		OLED_ShowCHinese(0,0, 47);
+		OLED_ShowCHinese(0+16,0, 48);
+		OLED_ShowCHinese(0+16+16,0, 49);
+		
 		OLED_ShowCHinese(0+16+16+16+16,0, 35);
 		OLED_DrawBMP(36,(64-24)/8,36+22,(64)/8,BMP1);
 		
@@ -527,9 +526,9 @@ void dishu(void)
 		{
 			OLED_Clear();		//清屏
 			OLED_ShowCHinese(0,0, 31);
-			OLED_ShowCHinese(0+16,0, 32);
-			OLED_ShowCHinese(0+16+16,0, 33);
-			OLED_ShowCHinese(0+16+16+16,0, 34);
+			OLED_ShowCHinese(0,0, 47);
+			OLED_ShowCHinese(0+16,0, 48);
+			OLED_ShowCHinese(0+16+16,0, 49);
 			OLED_ShowCHinese(0+16+16+16+16,0, 35);
 			OLED_DrawBMP(68,(64-24)/8,68+22,(64)/8,BMP1);
 			OLED_DrawBMP(1,(64-5)/8,1+30,64/8,BMP2);
@@ -543,9 +542,9 @@ void dishu(void)
 		{
 			OLED_Clear();		//清屏
 			OLED_ShowCHinese(0,0, 31);
-			OLED_ShowCHinese(0+16,0, 32);
-			OLED_ShowCHinese(0+16+16,0, 33);
-			OLED_ShowCHinese(0+16+16+16,0, 34);
+			OLED_ShowCHinese(0,0, 47);
+			OLED_ShowCHinese(0+16,0, 48);
+			OLED_ShowCHinese(0+16+16,0, 49);
 			OLED_ShowCHinese(0+16+16+16+16,0, 35);
 			OLED_DrawBMP(100,(64-24)/8,100+22,(64)/8,BMP1);
 		
