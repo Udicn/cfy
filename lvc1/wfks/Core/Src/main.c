@@ -84,6 +84,7 @@ unsigned char BMP3[] =
 void SystemClock_Config(void);
 #define TIME  1500
 char win_temp=0;
+char mode=1;
 char huan_pic=0;
 	uint8_t rnd = 0;
 	char temp=0;
@@ -91,6 +92,7 @@ char huan_pic=0;
 		char jiao = 0;
 		uint16_t shijain = 0;
 		int num =0;
+		 unsigned char  accont=0;
 // 全局变量
 volatile uint32_t countdown_target = 0;
 /* USER CODE BEGIN PFP */
@@ -171,7 +173,7 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
 	
-	HAL_TIM_Base_Start_IT(&htim6);   
+
 	
 	OLED_Hinit();       //OLED端口设置      
 	OLED_SInit();		//OLED内部初始化
@@ -179,100 +181,196 @@ int main(void)
 	GG:
 	
 	OLED_Clear();		//清屏
-		//准备好了吗？按下任意键—开始游戏吧
-	OLED_ShowCHinese(35,0, 11);
+
+		//36为空
+	OLED_ShowCHinese(32,0, 11);
 	OLED_ShowCHinese(48,0, 12);
 	OLED_ShowCHinese(64,0, 13);
 	OLED_ShowCHinese(80,0, 14);
+		//普通模式
+	OLED_ShowCHinese(32,3, 41);
+	OLED_ShowCHinese(48,3, 42);
+	OLED_ShowCHinese(64,3, 43);
+	OLED_ShowCHinese(80,3, 44);
+	//无尽模式
+	OLED_ShowCHinese(32,6, 37);
+	OLED_ShowCHinese(48,6, 38);
+	OLED_ShowCHinese(64,6, 39);
+	OLED_ShowCHinese(80,6, 40);
+	while(1)
+	{
+		OLED_ShowCHinese(16,accont+3, 45);
+	  
+		if(jiao==1)
+		{
+			if(accont==0)
+			{
+				OLED_ShowCHinese(16,3, 36);
+			}
+			else if(accont==3)
+			{
+				OLED_ShowCHinese(16,6, 36);
+			}
+			mode=1;
+			accont-=3;
+			if(accont>3)
+			{
+				accont=3;
+			}
+			if(accont==-3)
+			{
+				accont=3;
+			}
+			if(accont<0)
+			{
+				accont=3;
+			}
+			jiao=0;
+		}
+		else if(jiao==2)
+		{
+						if(accont==0)
+			{
+				OLED_ShowCHinese(16,3, 36);
+			}
+			else if(accont==3)
+			{
+				OLED_ShowCHinese(16,6, 36);
+			}
+			accont+=3;
+			mode=2;
+
+			if(accont>3)
+			{
+				accont=0;
+			}
+			//accont%=3;
+			jiao=0;
+		}
+		else if(jiao==4)
+		{
+			
+			jiao=0;
+				break;
+		}
 	
+	}
+	HAL_Delay(100);
+	jiao=0;
+	OLED_Clear();
+	jiao=0;
+	//准备好了吗按下任意键开始游戏
+	OLED_ShowCHinese(0,0, 0);
+	OLED_ShowCHinese(16,0, 1);
+	OLED_ShowCHinese(32,0, 2);
+	OLED_ShowCHinese(48,0, 3);
+	OLED_ShowCHinese(64,0, 4);
+	OLED_ShowCHinese(80,0, 5);
+	OLED_ShowCHinese(96,0, 6);
+	OLED_ShowCHinese(16,3, 7);
+	OLED_ShowCHinese(32,3 ,8);
+	OLED_ShowCHinese(48,3, 9);
+	OLED_ShowCHinese(64,3, 10);
+	OLED_ShowCHinese(80,3, 11);
+	OLED_ShowCHinese(32,6, 12);
+	OLED_ShowCHinese(48,6, 13);
+	HAL_Delay(100);
+	jiao=0;
+	OLED_ShowCHinese(64,6, 14);
+	jiao=0;
 	while(jiao==0);
 	jiao=0;	
+	temp=0;
 	huan_pic=0;
 	rnd=0;
   HAL_Delay(1000);
-
-		
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	HAL_Delay(100);
+	jiao=0;
+	HAL_TIM_Base_Start_IT(&htim6);
   while (1)
   {
-		rnd = get_random_0_to_4();
-		dishu();
-		while(temp==0)
+		if(mode==1)
 		{
-			if(huan_pic==1)
+			
+			rnd = get_random_0_to_4();
+			dishu();
+			if(temp==1)
 			{
-				rnd = get_random_0_to_4();
-				dishu();
-				huan_pic=0;
-			}
-			if(jiao==rnd)
-			{
+				goto xixi;
 				temp=0;
-				win();
-				huan_pic=1;
-				win_temp=1;
-				jiao=0;
 			}
-			else if(jiao !=rnd &&jiao !=0)
+			while(temp==0)
 			{
-				temp=0;
-				gg();
-				win_temp=2;
-				jiao=0;
-				goto GG ;
-					
-
+				OLED_ShowNum(64,0,num/1000,2,20);
+				if(huan_pic==1)
+				{
+					rnd = get_random_0_to_4();
+					dishu();
+					huan_pic=0;
+				}
+				if(jiao==rnd)
+				{
+					num=0;
+					temp=0;
+					win();
+					huan_pic=1;
+					win_temp=1;
+					jiao=0;
+				}
+				else if(jiao !=rnd &&jiao !=0)
+				{
+					xixi:
+					temp=0;
+					gg();
+					win_temp=2;
+					jiao=0;
+					num=0;
+					HAL_TIM_Base_Stop_IT(&htim6);
+					goto GG ;
+				}
 			}
 		}
-//		while(win_temp==1)
-//		{
-//			
-//			rnd = get_random_0_to_4();
-//			dishu();
-//			while(temp==0)
-//			{
-//				if(jiao==rnd)
-//				{
-//					win();
-//					temp=0;
-//				}
-//				else 
-//				{
-//					win_temp=0;
-//				}
-//			}
+		if(mode==2)
+		{
+			HAL_TIM_Base_Stop_IT(&htim6);
+			rnd = get_random_0_to_4();
+			dishu();
 
-//		}
-		
-//			shuchu();
-//	    dishu();
-//				if(countdown_target && (HAL_GetTick() >= countdown_target)) {
-//  	OLED_Clear();		//清屏\
-    countdown_target = 0; // 清除目标时间
-//  }
-//		delay_ms(500);
-//		OLED_Clear();		//清屏
-		
-//		yanshi();
-//		if(shijain == 1)
-//		{
-//				OLED_Clear();		//清屏
-//		}
-//		
+			while(temp==0)
+			{
+				OLED_ShowCHinese(64,0,46);
+				if(huan_pic==1)
+				{
+					rnd = get_random_0_to_4();
+					dishu();
+					huan_pic=0;
+				}
+				if(jiao==rnd)
+				{
 
-//		if(rnd == 0 ||rnd == 1||rnd == 3 ){
-//			HAL_GPIO_WritePin(GPIOD ,GPIO_PIN_10,GPIO_PIN_SET);
-//		}
-    /* USER CODE END WHILE */
-//				OLED_ShowCHinese(16,0, 0);
-//		OLED_Refresh_Full();
+					temp=0;
+					win();
+					huan_pic=1;
+					win_temp=1;
+					jiao=0;
+				}
+				else if(jiao !=rnd &&jiao !=0)
+				{
+					temp=0;
+					gg();
+					win_temp=2;
+					jiao=0;
 
-    /* USER CODE BEGIN 3 */
+					HAL_TIM_Base_Stop_IT(&htim6);
+					goto GG ;
+				}
+			}
+		}
   }
-  /* USER CODE END 3 */
 }
 
 /**
@@ -324,33 +422,12 @@ uint8_t get_random_0_to_4(void) {
     return ((rand() % 4)+1);
 
 }
-uint8_t shuchu(void){
-				if(HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_7) == 0||
-   HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_8) == 0 ||
-   HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_9) == 0 ||
-   HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_10) == 0)
-			{
-				HAL_Delay(50);
-							if(HAL_GPIO_ReadPin(GPIOE,GPIO_PIN_7) == 0||
-   HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_8) == 0 ||
-   HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_9) == 0 ||
-   HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_10) == 0)
-			{
-				 rnd = get_random_0_to_4();
-				
-				
-			}
-			}
-			return rnd;
-}
-void StartCountdown() {
+void StartCountdown()
+{
   countdown_target = HAL_GetTick() + 50; // 计算结束时间点
 }
-
-
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-
 	if(GPIO_Pin == GPIO_PIN_7)
 	{
 		int time=TIME;
@@ -361,7 +438,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 			jiao=1;
 			HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_8);
 		}
-
 	}
 	else if(GPIO_Pin == GPIO_PIN_8)
 	{
@@ -399,126 +475,19 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		}
 		HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_11);
 	}
-	
 }
-//uint16_t pin=GPIO_PIN_8;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim )
 {
 //	uint8_t kai = 0;
   if(htim->Instance==TIM6)
   {
-		//if(chui == 1)
-		//{
-	//		dujiao();
-//			shuchu();
-			
-    //  num  ++;
-		
-		//	if(num < 5000)
-		//	{
-//					kai = 1;
-//				if(jiao == rnd){
-//				
-////				HAL_GPIO_WritePin(GPIOD ,GPIO_PIN_10,GPIO_PIN_SET);
-//				OLED_Clear();		//清屏
-//					//恭喜你打到地鼠了！
-//	OLED_ShowCHinese(40,2, 22);
-//	OLED_ShowCHinese(56,2, 23);
-//	OLED_ShowCHinese(72,2, 24);
-//	OLED_ShowCHinese(16,4, 25);
-//	OLED_ShowCHinese(32,4, 26);
-//	OLED_ShowCHinese(48,4, 27);
-//	OLED_ShowCHinese(64,4, 28);
-//	OLED_ShowCHinese(80,4, 29);
-//	OLED_ShowCHinese(98,4, 30);
-//				chui =0;
-//				num = 0;
-
-//			}
-//				else if((jiao != rnd) &&(kai == 1) ){
-//					OLED_Clear();
-//	//很遗憾游戏失败
-//	OLED_ShowCHinese(40,2, 17);
-//	OLED_ShowCHinese(56,2, 18);
-//	OLED_ShowCHinese(72,2, 19);
-//	OLED_ShowCHinese(32,4, 13);
-//	OLED_ShowCHinese(48,4, 14);
-//	OLED_ShowCHinese(64,4, 20);
-//	OLED_ShowCHinese(80,4, 21);
-//			chui =0;
-//			num = 0;
-//					kai = 0;
-//					
-//				}
-		//}
-//else 
-	//	{
-//		OLED_Clear();
-//	//很遗憾游戏失败
-//	OLED_ShowCHinese(40,2, 17);
-//	OLED_ShowCHinese(56,2, 18);
-//	OLED_ShowCHinese(72,2, 19);
-//	OLED_ShowCHinese(32,4, 13);
-//	OLED_ShowCHinese(48,4, 14);
-//	OLED_ShowCHinese(64,4, 20);
-//	OLED_ShowCHinese(80,4, 21);
-//			chui =0;
-//			num = 0;
-
-//		}
-
-
-			
-
-//}
-//	}
-}
+			num++;
+		if(num>=5000)
+		{
+			temp=1;
+		}
 	}
-//uint16_t yanshi(void )
-//{
-//	HAL_Delay(500);
-//	shijain = 1;
-//	return shijain;
-//}
-
-// 在定时器中断中调用（如1ms中断）
-//volatile uint32_t system_ticks = 0;
-//void TIM6_IRQHandler(void)
-//{
-//	if(__HAL_TIM_GET_FLAG(&htim6,TIM_FLAG_UPDATE) != RESET){
-//		__HAL_TIM_CLEAR_FLAG(&htim6,TIM_FLAG_UPDATE);
-//	
-//	system_ticks++;
-//	if(system_ticks %10 == 0){
-//							HAL_GPIO_WritePin(GPIOD ,GPIO_PIN_9,GPIO_PIN_SET);
-//					HAL_GPIO_WritePin(GPIOD ,GPIO_PIN_8,GPIO_PIN_SET);
-//					HAL_GPIO_WritePin(GPIOD ,GPIO_PIN_10,GPIO_PIN_SET);
-//					HAL_GPIO_WritePin(GPIOD ,GPIO_PIN_11,GPIO_PIN_SET);
-//	}
-//	}
-//}
-//void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-//    if (htim->Instance == TIM6) { // 检查是否是TIM6中断
-//        static uint8_t need_refresh = 0;
-//        static uint32_t counter = 0;
-//        
-//        counter++;
-//        if (counter >= 10) { // 每1000次中断执行一次
-//            counter = 0; 
-//            need_refresh = 1;
-//        }
-//        
-//        if (need_refresh == 1 && chui == 1) {
-//					HAL_GPIO_WritePin(GPIOD ,GPIO_PIN_9,GPIO_PIN_SET);
-//					HAL_GPIO_WritePin(GPIOD ,GPIO_PIN_8,GPIO_PIN_SET);
-//					HAL_GPIO_WritePin(GPIOD ,GPIO_PIN_10,GPIO_PIN_SET);
-//					HAL_GPIO_WritePin(GPIOD ,GPIO_PIN_11,GPIO_PIN_SET);
-//            // 执行需要定期刷新的任务
-//             // 例如刷新显示屏
-//            need_refresh = 0; // 重置标志
-//        }
-//    }
-//}
+	}
 void dishu(void)
 {
 	if(rnd==1)
@@ -528,7 +497,7 @@ void dishu(void)
 		OLED_ShowCHinese(0+16,0, 32);
 		OLED_ShowCHinese(0+16+16,0, 33);
 		OLED_ShowCHinese(0+16+16+16,0, 34);
-		OLED_ShowCHinese(0+16+16+16+16,0, 35);
+		OLED_ShowCHinese(0+16+16+16+16,0,35);
 		OLED_DrawBMP(4,(64-24)/8,4+22,(64)/8,BMP1);
 		
 		OLED_DrawBMP(1,(64-5)/8,1+30,64/8,BMP2);
